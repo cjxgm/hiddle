@@ -26,12 +26,12 @@
 
 typedef struct Event
 {
-	unsigned int l:1;	// is left     mouse button hold_start?
-	unsigned int r:1;	// is    right mouse button hold_start?
-	unsigned int m:1;	// is  middle  mouse button hold_start?
-	unsigned int  :5;
+	unsigned int l:1;	// is left     mouse button down?
+	unsigned int r:1;	// is    right mouse button down?
+	unsigned int m:1;	// is  middle  mouse button down?
+	unsigned int  :5;	// I don't know what those value mean.
 	char x;
-	char y;	// note that this value is actually "-y"
+	char y;	// note that this value is actually "-y", I mean, flipped.
 }
 __attribute__((__packed__))
 Event;
@@ -47,13 +47,16 @@ Mode;
 
 static void show_help(const char * app)
 {
-	printf("%s [xinput_device_id [device_file]]\n\n"
+	printf("%s [xinput_device_id [device_file]]\n"
+			"%s --help\n"
+			"%s -h\n\n"
+			"--help, -h         show this help.\n"
 			"xinput_device_id   you can run 'xinput' and see the device id of\n"
 			"                   your mouse. If you omit this then it will be\n"
 			"                   automatically determined.\n"
 			"device_file        the mouse device located under /dev. If you omit\n"
 			"                   this, /dev/input/mice will be used.\n",
-			app);
+			app, app, app);
 }
 
 int main(int argc, char * argv[])
