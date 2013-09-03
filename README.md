@@ -1,5 +1,5 @@
 # hiddle - Hybrid mIDDLE mouse button
-Licensed under the MIT License.
+Licensed under the MIT License.<br>
 Copyright (C) 2013 eXerigumo Clanjor (哆啦比猫/兰威举)<hr>
 
 This little program is for those who are using a laptop
@@ -46,8 +46,8 @@ hiddle --help
 You need read permission to your mouse device file
 (default is `/dev/input/mice`).
 On archlinux, you can write udev rules to set the read permission:
-`/etc/udev/rules.d/20-mice-permission.rules`
 ```udev
+# /etc/udev/rules.d/20-mice-permission.rules
 KERNEL=="mice", MODE="644"
 ```
 
