@@ -51,3 +51,6 @@ On archlinux, you can write udev rules to set the read permission:
 KERNEL=="mice", MODE="644"
 ```
 
+## To Do
+See the top of `hiddle.c`.
+
