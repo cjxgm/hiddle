@@ -10,10 +10,7 @@
 //
 // TODO:
 // 	*	find a more accurate timing method
-//	*	allow the user to set the "drag or scroll" threshold time
-//	*	add a time threshold that, if you release the middle button within
-//		the time, it will alwayes generate a middle click, even if you
-//		moved the mouse.
+//	*	allow the user to set the drag_threshold (getopt?)
 
 
 #include <stdio.h>
