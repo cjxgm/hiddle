@@ -9,7 +9,6 @@
 // 		eXerigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
 //
 // TODO:
-// 	*	persistent mouse persition when scroll
 // 	*	find a more accurate timing method
 //	*	allow the user to set the "drag or scroll" threshold time
 //	*	add a time threshold that, if you release the middle button within
@@ -116,6 +115,8 @@ int main(int argc, char * argv[])
 	Event e;
 	Mode mode = MODE_NORMAL;
 	time_t hold_start = 0;
+	int tx, ty;	// temporary relative/absolute position of cursor
+	int screen;	// screen number (used in xdo_mouselocation and xdo_mousemove);
 	while (1) {
 		fread(&e, sizeof(e), 1, fp);
 		e.y = -e.y;	// remember? it's flipped!
@@ -133,7 +134,10 @@ int main(int argc, char * argv[])
 						mode = MODE_DRAG;
 						xdo_mousedown(xdo, CURRENTWINDOW, 2);
 					}
-					else mode = MODE_SCROLL;
+					else {
+						xdo_mouselocation(xdo, &tx, &ty, &screen);
+						mode = MODE_SCROLL;
+					}
 					break;
 				}
 				if (!e.m) {
@@ -148,6 +152,7 @@ int main(int argc, char * argv[])
 				}
 				break;
 			case MODE_SCROLL:
+				xdo_mousemove(xdo, tx, ty, screen);
 				if (e.y < 0) xdo_click(xdo, CURRENTWINDOW, 4);	// scroll up
 				if (e.y > 0) xdo_click(xdo, CURRENTWINDOW, 5);	// scroll hold_start
 				if (e.x < 0) xdo_click(xdo, CURRENTWINDOW, 6);	// scroll left
