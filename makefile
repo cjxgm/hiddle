@@ -4,9 +4,9 @@ SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
 DST = hiddle
 APP = hiddle
-VER = 0.10
+VER = 0.11
 ARG =
-FLG = -Wall -O3 -std=gnu11
+FLG = -Wall -O3 -std=gnu11 -I.
 LIB = -lxdo
 
 # interfaces
@@ -43,5 +43,5 @@ $(DST): $(OBJ) makefile
 	gcc -o $@ $< $(FLG) $(LIB)
 .c.o:
 	gcc -c -o $@ $< $(FLG) $(LIB)
-$(foreach file,$(SRC),$(eval $(shell gcc -MM $(FLG) $(file)) makefile))
+$(foreach file,$(SRC),$(eval $(shell gcc -MM $(FLG) $(file)) config.h makefile))
 

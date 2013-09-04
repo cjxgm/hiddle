@@ -21,6 +21,7 @@
 #include <err.h>
 #include <xdo.h>
 #include <time.h>
+#include <config.h>
 
 typedef struct
 {
@@ -58,7 +59,8 @@ int main(int argc, char * argv[])
 	while ((arg = getopt_long(argc, argv, soptions, loptions, NULL)) != -1)
 		switch (arg) {
 			case 'h':
-				printf("hiddle - Hybrid Middle Mouse Button\n"
+				printf(APP_NAME " - Hybrid Middle Mouse Button\n"
+						"version: " APP_VER "\n"
 						"\n"
 						"  middle mouse click           For short: click\n"
 						"                               hold down middle mouse button, don't move your\n"
