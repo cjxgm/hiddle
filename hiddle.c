@@ -63,6 +63,7 @@ int main(int argc, char * argv[])
 {
 	int xinput_device_id = 0;
 	const char * device_file = "/dev/input/mice";
+	int move_threshold = 10;
 	static char buf[128];	// for sprintf
 
 	// process arguments
@@ -126,18 +127,22 @@ int main(int argc, char * argv[])
 				if (e.m) {
 					mode = MODE_HOLD;
 					hold_start = time(NULL);
+					tx = ty = 0;
 				}
 				break;
 			case MODE_HOLD:
-				if (e.x || e.y) {
-					if (time(NULL) == hold_start) {
-						mode = MODE_DRAG;
-						xdo_mousedown(xdo, CURRENTWINDOW, 2);
-					}
-					else {
-						xdo_mouselocation(xdo, &tx, &ty, &screen);
-						mode = MODE_SCROLL;
-					}
+				tx += e.x;
+				ty += e.y;
+				if (time(NULL) == hold_start &&
+						(abs(tx) > move_threshold ||
+						 abs(ty) > move_threshold)) {
+					mode = MODE_DRAG;
+					xdo_mousedown(xdo, CURRENTWINDOW, 2);
+					break;
+				}
+				else if (time(NULL) != hold_start) {
+					xdo_mouselocation(xdo, &tx, &ty, &screen);
+					mode = MODE_SCROLL;
 					break;
 				}
 				if (!e.m) {
