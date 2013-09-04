@@ -10,7 +10,7 @@
 //
 // TODO:
 // 	*	find a more accurate timing method
-//	*	allow the user to set the drag_threshold (getopt?)
+// 	*	customizable time
 
 
 #include <stdio.h>
@@ -41,17 +41,18 @@ int main(int argc, char * argv[])
 {
 	int xinput_device_id = -1;
 	const char * device_file = "/dev/input/mice";
-	int drag_threshold = 10;
+	int drag_threshold = 20;
 	char buf[128];	// for sprintf
 
 	// process arguments
 	// "s" for "short" and "l" for "long"
-	const   char        soptions[] = "hi:d:";
+	const   char        soptions[] = "ht:i:d:";
 	const struct option loptions[] = {
-		{ "help"  , no_argument      , 0, 'h' },
-		{ "id"    , required_argument, 0, 'i' },
-		{ "device", required_argument, 0, 'd' },
-		{  0      , 0                , 0,  0  },
+		{ "help"             , no_argument      , NULL, 'h' },
+		{ "threshold"        , required_argument, NULL, 't' },
+		{ "id"               , required_argument, NULL, 'i' },
+		{ "device"           , required_argument, NULL, 'd' },
+		{  NULL              , 0                , NULL,  0  },
 	};
 	int arg;
 	while ((arg = getopt_long(argc, argv, soptions, loptions, NULL)) != -1)
@@ -59,16 +60,34 @@ int main(int argc, char * argv[])
 			case 'h':
 				printf("hiddle - Hybrid Middle Mouse Button\n"
 						"\n"
+						"  middle mouse click           For short: click\n"
+						"                               hold down middle mouse button, don't move your\n"
+						"                               mouse or move only within the drag threshold,\n"
+						"                               then release middle mouse button.\n"
+						"\n"
+						"  middle mouse drag            For short: hold, move immediately\n"
+						"                               hold down middle mouse button, move your mouse\n"
+						"                               more than the drag threshold within 1 second.\n"
+						"\n"
+						"  middle mouse scroll          For short: hold, wait for 1 second, move\n"
+						"                               hold down middle mouse button, don't move your\n"
+						"                               mouse or move only within the drag threshold,\n"
+						"                               after 1 second then move your mouse to scroll.\n"
+						"\n"
+						"\n"
 						"Usage: %s [OPTION]...\n"
 						"\n"
 						"  -h, --help                   show this help.\n"
-						"  -i, --id=XINPUT_DEVICE_ID    you can run 'xinput' to see the device id of\n"
-						"                               your mouse. If you omit this then it will be\n"
-						"                               automatically determined.\n"
-						"  -d, --device=DEVICE_FILE     the mouse device located under /dev. If you\n"
-						"                               omit this, /dev/input/mice will be used.\n"
+						"  -t, --threshold=PIXELS       set the drag threshold to PIXELS. \n"
+						"                               default is 20.\n"
+						"  -i, --id=ID                  ID is the mouse device id got from 'xinput'.\n"
+						"                               you can run 'xinput' to see it. If you omit\n"
+						"                               this, it will be automatically determined.\n"
+						"  -d, --device=FILE            FILE is the mouse device located under /dev.\n"
+						"                               default is '/dev/input/mice'.\n"
 						, argv[0]);
 				exit(0);
+			case 't': drag_threshold   = atoi(optarg); break;
 			case 'i': xinput_device_id = atoi(optarg); break;
 			case 'd': device_file      =      optarg ; break;
 		}
