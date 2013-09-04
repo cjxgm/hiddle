@@ -46,8 +46,9 @@ hiddle --help
 You need read permission to your mouse device file
 (default is `/dev/input/mice`).
 On archlinux, you can write udev rules to set the read permission:
+Edit file `/etc/udev/rules.d/99-zzz-mouse.rules`(prefixed with `99-zzz`
+so that the rule will be parsed last.):
 ```udev
-# /etc/udev/rules.d/20-mice-permission.rules
 KERNEL=="mice", MODE="644"
 ```
 

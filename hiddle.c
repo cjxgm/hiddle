@@ -9,6 +9,7 @@
 // 		eXerigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
 //
 // TODO:
+// 	*	persistent mouse persition when scroll
 // 	*	find a more accurate timing method
 //	*	allow the user to set the "drag or scroll" threshold time
 //	*	add a time threshold that, if you release the middle button within
