@@ -48,33 +48,31 @@ int main(int argc, char * argv[])
 	// "s" for "short" and "l" for "long"
 	const   char        soptions[] = "hi:d:";
 	const struct option loptions[] = {
-		{ "help"    , no_argument      , 0, 'h' },
-		{ "id"      , required_argument, 0, 'i' },
-		{ "device"  , required_argument, 0, 'd' },
-		{  0        , 0                , 0,  0  },
+		{ "help"  , no_argument      , 0, 'h' },
+		{ "id"    , required_argument, 0, 'i' },
+		{ "device", required_argument, 0, 'd' },
+		{  0      , 0                , 0,  0  },
 	};
 	int arg;
 	while ((arg = getopt_long(argc, argv, soptions, loptions, NULL)) != -1)
 		switch (arg) {
 			case 'h':
-				printf("%s [xinput_device_id [device_file]]\n"
-						"%s --help\n"
-						"%s -h\n\n"
-						"--help, -h         show this help.\n"
-						"xinput_device_id   you can run 'xinput' and see the device id of\n"
-						"                   your mouse. If you omit this then it will be\n"
-						"                   automatically determined.\n"
-						"device_file        the mouse device located under /dev. If you omit\n"
-						"                   this, /dev/input/mice will be used.\n",
-						argv[0], argv[0], argv[0]);
+				printf("hiddle - Hybrid Middle Mouse Button\n"
+						"\n"
+						"Usage: %s [OPTION]...\n"
+						"\n"
+						"  -h, --help                   show this help.\n"
+						"  -i, --id=XINPUT_DEVICE_ID    you can run 'xinput' to see the device id of\n"
+						"                               your mouse. If you omit this then it will be\n"
+						"                               automatically determined.\n"
+						"  -d, --device=DEVICE_FILE     the mouse device located under /dev. If you\n"
+						"                               omit this, /dev/input/mice will be used.\n"
+						, argv[0]);
 				exit(0);
-			case 'i':
-				xinput_device_id = atoi(optarg);
-				break;
-			case 'd':
-				device_file = optarg;
-				break;
+			case 'i': xinput_device_id = atoi(optarg); break;
+			case 'd': device_file      =      optarg ; break;
 		}
+	// automatically determine the xinput_device_id if not set
 	if (xinput_device_id == -1) {
 		FILE * fp = popen("xinput | grep '[Mm]ouse' | head -n 1 | cut -f2 | cut -d= -f2", "r");
 		if (!fp) err(1, "unable to determine xinput_device_id:\n"
@@ -89,8 +87,8 @@ int main(int argc, char * argv[])
 
 	// open mouse device and set unbuffered mode
 	FILE * fp = fopen(device_file, "r");
-	if (!fp) err(1, "unable to open device %s", device_file);
-	if (setvbuf(fp, NULL, _IONBF, 0)) err(1, "unable to set unbuffered mode");
+	if (!fp) err(1, "unable to open device '%s'", device_file);
+	if (setvbuf(fp, NULL, _IONBF, 0)) err(1, "unable to set unbuffered mode on '%s'", device_file);
 
 	// init xdo
 	xdo_t * xdo = xdo_new(NULL);
