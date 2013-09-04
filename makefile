@@ -27,6 +27,7 @@ test: all
 	./$(DST) $(ARG)
 commit: cleanall
 	git add -A .
+	git diff --cached
 	git commit -a || true
 
 # rules
