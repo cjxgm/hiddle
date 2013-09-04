@@ -10,7 +10,7 @@ FLG = -Wall -O3 -std=gnu11
 LIB = -lxdo
 
 # interfaces
-.PHONY: all clean cleanall rebuild package test commit
+.PHONY: all clean cleanall rebuild package test commit install uninstall
 all: config.h $(DST)
 clean:
 	rm -f config.h $(OBJ)
@@ -29,6 +29,10 @@ commit: cleanall
 	git add -A .
 	git diff --cached
 	git commit -a || true
+install: all
+	install -svm 755 ./hiddle /usr/bin/hiddle
+uninstall: all
+	rm -f /usr/bin/hiddle
 
 # rules
 config.h: makefile
