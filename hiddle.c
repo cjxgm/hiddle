@@ -94,16 +94,18 @@ int main(int argc, char * argv[])
 	// init xdo
 	xdo_t * xdo = xdo_new(NULL);
 
-	// create and register callback for SIGINT and at_exit
-	void exit_cb()
+	// create and register callback for SIGINT
+	void sigint_cb()
 	{
 		sprintf(buf, "xinput set-button-map %d 1 2 3 4 5 6 7", xinput_device_id);
 		system(buf);
 
 		fclose(fp);
 		xdo_free(xdo);
+
+		exit(0);
 	}
-	atexit(exit_cb);
+	signal(SIGINT, (void *)sigint_cb);
 
 	// disable middle mouse button
 	sprintf(buf, "xinput set-button-map %d 1 0 3 4 5 6 7", xinput_device_id);
