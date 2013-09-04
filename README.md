@@ -26,31 +26,38 @@ With this program:
 * If you are going to compile from source, a working C language build
   environment is also required (GNU make, gcc, standard C headers).
 
-## Compile
+## Compile and Install
 Just
 ```bash
 make
+sudo make install
 ```
-
-## Install
-Just move `hiddle` to your `/usr/bin/`
 
 ## Uninstall
-Just remove `/usr/bin/hiddle`
+Just
+```bash
+sudo make uninstall
+```
 
 ## Use
-You can run the following command to see help:
-```bash
-hiddle --help
-```
-You need read permission to your mouse device file
-(default is `/dev/input/mice`).
-On archlinux, you can write udev rules to set the read permission:
-Edit file `/etc/udev/rules.d/99-zzz-mouse.rules`(prefixed with `99-zzz`
-so that the rule will be parsed last.):
-```udev
-KERNEL=="mice", MODE="644"
-```
+Generally, just run `hiddle`.
+You can also run `hiddle --help` for more information.
+
+**But**, before running `hiddle`, you should gain **read** permission
+to your mouse device file (default is `/dev/input/mice`). You can use
+any one of the following methods:
+* run `hiddle` with `root`
+* `sudo hiddle`
+* `sudo chmod 644 /dev/input/mice` then run `hiddle`, but you should set
+  the permission every time you fire up your computer.
+* To persist the permission, use udev rules.
+  Edit file `/etc/udev/rules.d/99-zzz-mouse.rules`
+  (the path may be different in different OS. The prefix `99-zzz` is used
+  so that the rule will be parsed last.):
+
+  ```udev
+  KERNEL=="mice", MODE="644"
+  ```
 
 ## To Do
 See the top of `hiddle.c`.
