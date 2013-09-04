@@ -22,9 +22,9 @@ With this program:
   * `cut`
 * `xinput` (`xorg-xinput` in archlinux)
 * `libxdo` (`xdotool` in archlinux)
-* `libc` (Of course! It's the standard C library)
+* `glibc` (Of course! It's the standard GNU C library)
 * If you are going to compile from source, a working C language build
-  environment is also required (GNU make, gcc, standard C headers).
+  environment is also required (GNU make, gcc, standard GNU C headers).
 
 ## Compile and Install
 Just
