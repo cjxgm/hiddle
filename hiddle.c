@@ -17,11 +17,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <getopt.h>
 #include <err.h>
 #include <xdo.h>
 #include <time.h>
 
-typedef struct Event
+typedef struct
 {
 	unsigned int l:1;	// is left     mouse button down?
 	unsigned int r:1;	// is    right mouse button down?
@@ -33,63 +34,63 @@ typedef struct Event
 __attribute__((__packed__))
 Event;
 
-typedef enum Mode
-{
-	MODE_NORMAL,
-	MODE_HOLD,
-	MODE_DRAG,
-	MODE_SCROLL,
-}
-Mode;
+typedef enum { MODE_NORMAL, MODE_HOLD, MODE_DRAG, MODE_SCROLL } Mode;
 
-static void show_help(const char * app)
-{
-	printf("%s [xinput_device_id [device_file]]\n"
-			"%s --help\n"
-			"%s -h\n\n"
-			"--help, -h         show this help.\n"
-			"xinput_device_id   you can run 'xinput' and see the device id of\n"
-			"                   your mouse. If you omit this then it will be\n"
-			"                   automatically determined.\n"
-			"device_file        the mouse device located under /dev. If you omit\n"
-			"                   this, /dev/input/mice will be used.\n",
-			app, app, app);
-}
 
 int main(int argc, char * argv[])
 {
-	int xinput_device_id = 0;
+	int xinput_device_id = -1;
 	const char * device_file = "/dev/input/mice";
 	int drag_threshold = 10;
-	static char buf[128];	// for sprintf
+	char buf[128];	// for sprintf
 
 	// process arguments
-	if (argc > 3) {
-		show_help(argv[0]);
-		return 0;
-	}
-	if (argc == 2 &&
-			(!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
-		show_help(argv[0]);
-		return 0;
-	}
-	if (argc == 1) {
+	// "s" for "short" and "l" for "long"
+	const   char        soptions[] = "hi:d:";
+	const struct option loptions[] = {
+		{ "help"    , no_argument      , 0, 'h' },
+		{ "id"      , required_argument, 0, 'i' },
+		{ "device"  , required_argument, 0, 'd' },
+		{  0        , 0                , 0,  0  },
+	};
+	int arg;
+	while ((arg = getopt_long(argc, argv, soptions, loptions, NULL)) != -1)
+		switch (arg) {
+			case 'h':
+				printf("%s [xinput_device_id [device_file]]\n"
+						"%s --help\n"
+						"%s -h\n\n"
+						"--help, -h         show this help.\n"
+						"xinput_device_id   you can run 'xinput' and see the device id of\n"
+						"                   your mouse. If you omit this then it will be\n"
+						"                   automatically determined.\n"
+						"device_file        the mouse device located under /dev. If you omit\n"
+						"                   this, /dev/input/mice will be used.\n",
+						argv[0], argv[0], argv[0]);
+				exit(0);
+			case 'i':
+				xinput_device_id = atoi(optarg);
+				break;
+			case 'd':
+				device_file = optarg;
+				break;
+		}
+	if (xinput_device_id == -1) {
 		FILE * fp = popen("xinput | grep '[Mm]ouse' | head -n 1 | cut -f2 | cut -d= -f2", "r");
 		if (!fp) err(1, "unable to determine xinput_device_id:\n"
 				"do you have the following commands?\n"
 				"\tsh\n\txinput\n\tgrep\n\thead\n\tcut\n");
 		if (fscanf(fp, "%d", &xinput_device_id) != 1)
 			err(1, "no mouse found?\n"
-					"try to figure out the device id of your mouse with xinput.");
+					"try to figure out the device id of your mouse with xinput\n");
 		fclose(fp);
 	}
-	else xinput_device_id = atoi(argv[1]);
-	if (argc == 3) device_file = argv[2];
+	if (optind != argc) err(1, "useless trailing argument(s)");
 
 	// open mouse device and set unbuffered mode
 	FILE * fp = fopen(device_file, "r");
-	if (!fp) err(1, "unable to open device %s.", device_file);
-	if (setvbuf(fp, NULL, _IONBF, 0)) err(1, "unable to set unbuffered mode.");
+	if (!fp) err(1, "unable to open device %s", device_file);
+	if (setvbuf(fp, NULL, _IONBF, 0)) err(1, "unable to set unbuffered mode");
 
 	// init xdo
 	xdo_t * xdo = xdo_new(NULL);
