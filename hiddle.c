@@ -106,7 +106,6 @@ int main(int argc, char * argv[])
 		fclose(fp);
 		xdo_free(xdo);
 	}
-	signal(SIGINT, (void *)exit_cb);
 	atexit(exit_cb);
 
 	// disable middle mouse button
