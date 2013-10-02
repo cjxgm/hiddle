@@ -1,0 +1,14 @@
+2013-10-02		v0.12
+	* millisecond-accurate timing.
+	* default scroll-delay is now 500ms.
+
+2013-09-04		v0.11
+	* fixed SIGSEGV when exiting.
+	* added drag-threshold.
+	* mouse cursor won't move when scrolling.
+	* use getopt to provide better command-line interface.
+	* drag-threshold and many things are customizable.
+
+2013-09-03		v0.10
+	* this little tool is now usable.
+
