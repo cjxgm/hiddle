@@ -9,7 +9,7 @@
 // 		eXerigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
 //
 // TODO:
-// 	*	customizable time
+// 	*	change mouse cursor when entering scroll mode rather than beep
 
 
 #include <stdio.h>
