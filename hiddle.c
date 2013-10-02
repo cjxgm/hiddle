@@ -9,7 +9,6 @@
 // 		eXerigumo Clanjor (哆啦比猫/兰威举) <cjxgm@126.com>
 //
 // TODO:
-// 	*	find a more accurate timing method
 // 	*	customizable time
 
 
@@ -37,12 +36,20 @@ Event;
 
 typedef enum { MODE_NORMAL, MODE_HOLD, MODE_DRAG, MODE_SCROLL } Mode;
 
+time_t time_ms()
+{
+	struct timespec tp;
+	clock_gettime(CLOCK_BOOTTIME, &tp);
+	return tp.tv_sec*1000 + tp.tv_nsec/1000000;
+}
+
 
 int main(int argc, char * argv[])
 {
 	int xinput_device_id = -1;
 	const char * device_file = "/dev/input/mice";
 	int drag_threshold = 20;
+	time_t scroll_delay = 500;
 	char buf[128];	// for sprintf
 
 	// process arguments
@@ -137,6 +144,7 @@ int main(int argc, char * argv[])
 	time_t hold_start = 0;
 	int tx, ty;	// temporary relative/absolute position of cursor
 	int screen;	// screen number (used in xdo_mouselocation and xdo_mousemove);
+	int scroll;
 	while (1) {
 		fread(&e, sizeof(e), 1, fp);
 		e.y = -e.y;	// remember? it's flipped!
@@ -145,21 +153,22 @@ int main(int argc, char * argv[])
 			case MODE_NORMAL:
 				if (e.m) {
 					mode = MODE_HOLD;
-					hold_start = time(NULL);
+					hold_start = time_ms();
 					tx = ty = 0;
 				}
 				break;
 			case MODE_HOLD:
 				tx += e.x;
 				ty += e.y;
-				if (time(NULL) == hold_start &&
+				scroll = (time_ms()-hold_start >= scroll_delay);
+				if (!scroll &&
 						(abs(tx) > drag_threshold ||
 						 abs(ty) > drag_threshold)) {
 					mode = MODE_DRAG;
 					xdo_mousedown(xdo, CURRENTWINDOW, 2);
 					break;
 				}
-				else if (time(NULL) != hold_start) {
+				else if (scroll) {
 					xdo_mouselocation(xdo, &tx, &ty, &screen);
 					mode = MODE_SCROLL;
 					putc('\a', stderr);
@@ -167,7 +176,7 @@ int main(int argc, char * argv[])
 				}
 				if (!e.m) {
 					mode = MODE_NORMAL;
-					if (time(NULL) == hold_start) xdo_click(xdo, CURRENTWINDOW, 2);
+					if (!scroll) xdo_click(xdo, CURRENTWINDOW, 2);
 				}
 				break;
 			case MODE_DRAG:
