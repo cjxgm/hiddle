@@ -54,12 +54,13 @@ int main(int argc, char * argv[])
 
 	// process arguments
 	// "s" for "short" and "l" for "long"
-	const   char        soptions[] = "ht:i:d:";
+	const   char        soptions[] = "ht:d:i:f:";
 	const struct option loptions[] = {
 		{ "help"             , no_argument      , NULL, 'h' },
 		{ "threshold"        , required_argument, NULL, 't' },
+		{ "delay"            , required_argument, NULL, 'd' },
 		{ "id"               , required_argument, NULL, 'i' },
-		{ "device"           , required_argument, NULL, 'd' },
+		{ "file"             , required_argument, NULL, 'f' },
 		{  NULL              , 0                , NULL,  0  },
 	};
 	int arg;
@@ -87,18 +88,21 @@ int main(int argc, char * argv[])
 						"Usage: %s [OPTION]...\n"
 						"\n"
 						"  -h, --help                   show this help.\n"
-						"  -t, --threshold=PIXELS       set the drag threshold to PIXELS. \n"
+						"  -t, --threshold=PIXELS       set the drag threshold to PIXELS.\n"
 						"                               default is 20.\n"
+						"  -d, --delay=TIME             set the scroll delay to TIME milliseconds.\n"
+						"                               default is 500.\n"
 						"  -i, --id=ID                  ID is the mouse device id got from 'xinput'.\n"
 						"                               you can run 'xinput' to see it. If you omit\n"
 						"                               this, it will be automatically determined.\n"
-						"  -d, --device=FILE            FILE is the mouse device located under /dev.\n"
+						"  -f, --file=FILE              FILE is the mouse device located under /dev.\n"
 						"                               default is '/dev/input/mice'.\n"
 						, argv[0]);
 				exit(0);
 			case 't': drag_threshold   = atoi(optarg); break;
+			case 'd': scroll_delay     = atoi(optarg); break;
 			case 'i': xinput_device_id = atoi(optarg); break;
-			case 'd': device_file      =      optarg ; break;
+			case 'f': device_file      =      optarg ; break;
 		}
 	// automatically determine the xinput_device_id if not set
 	if (xinput_device_id == -1) {
