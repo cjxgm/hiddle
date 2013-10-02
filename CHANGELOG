@@ -1,6 +1,11 @@
 2013-10-02		v0.12
+	* added this user-readable CHANGELOG
+	* beep when entering scroll mode.
 	* millisecond-accurate timing.
 	* default scroll-delay is now 500ms.
+	* scroll-delay is user customizable (through '-d').
+	* original '-d' for specifying mouse device now becomes '-f'
+	* simplified help text
 
 2013-09-04		v0.11
 	* fixed SIGSEGV when exiting.
