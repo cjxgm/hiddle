@@ -4,7 +4,7 @@ SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
 DST = hiddle
 APP = hiddle
-VER = 0.11
+VER = 0.12
 ARG =
 FLG = -Wall -O3 -std=gnu11 -I.
 LIB = -lxdo
