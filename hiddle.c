@@ -165,7 +165,7 @@ int main(int argc, char * argv[])
 				else if (scroll) {
 					xdo_mouselocation(xdo, &tx, &ty, &screen);
 					mode = MODE_SCROLL;
-					putc('\a', stderr);
+					//putc('\a', stderr);
 					break;
 				}
 				if (!e.m) {
