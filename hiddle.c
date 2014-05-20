@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
 		}
 	// automatically determine the xinput_device_id if not set
 	if (xinput_device_id == -1) {
-		FILE * fp = popen("xinput | grep '[Mm]ouse' | head -n 1 | cut -f2 | cut -d= -f2", "r");
+		FILE * fp = popen("xinput | grep 'TrackPoint' | head -n 1 | cut -f2 | cut -d= -f2", "r");
 		if (!fp) err(1, "unable to determine xinput_device_id:\n"
 				"do you have the following commands?\n"
 				"\tsh\n\txinput\n\tgrep\n\thead\n\tcut\n");
