@@ -121,6 +121,9 @@ int main(int argc, char * argv[])
 		sprintf(buf, "xinput set-button-map %d 1 2 3 4 5 6 7", xinput_device_id);
 		system(buf);
 
+		sprintf(buf, "xinput set-prop %d 'libinput Button Scrolling Button' 2", xinput_device_id);
+		system(buf);
+
 		fclose(fp);
 		xdo_free(xdo);
 
@@ -130,6 +133,10 @@ int main(int argc, char * argv[])
 
 	// disable middle mouse button
 	sprintf(buf, "xinput set-button-map %d 1 0 3 4 5 6 7", xinput_device_id);
+	system(buf);
+
+	// disable middle mouse button to scroll
+	sprintf(buf, "xinput set-prop %d 'libinput Button Scrolling Button' 0", xinput_device_id);
 	system(buf);
 
 	// the magic part start!
