@@ -189,7 +189,7 @@ int main(int argc, char * argv[])
 			case MODE_SCROLL:
 				xdo_move_mouse(xdo, tx, ty, screen);
 				if (e.y < 0) xdo_click_window(xdo, CURRENTWINDOW, 4);	// scroll up
-				if (e.y > 0) xdo_click_window(xdo, CURRENTWINDOW, 5);	// scroll hold_start
+				if (e.y > 0) xdo_click_window(xdo, CURRENTWINDOW, 5);	// scroll down
 				if (e.x < 0) xdo_click_window(xdo, CURRENTWINDOW, 6);	// scroll left
 				if (e.x > 0) xdo_click_window(xdo, CURRENTWINDOW, 7);	// scroll right
 				if (!e.m) mode = MODE_NORMAL;
