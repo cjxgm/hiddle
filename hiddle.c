@@ -188,10 +188,16 @@ int main(int argc, char * argv[])
 				break;
 			case MODE_SCROLL:
 				xdo_move_mouse(xdo, tx, ty, screen);
-				if (e.y < 0) xdo_click_window(xdo, CURRENTWINDOW, 4);	// scroll up
-				if (e.y > 0) xdo_click_window(xdo, CURRENTWINDOW, 5);	// scroll down
-				if (e.x < 0) xdo_click_window(xdo, CURRENTWINDOW, 6);	// scroll left
-				if (e.x > 0) xdo_click_window(xdo, CURRENTWINDOW, 7);	// scroll right
+				int ax = abs(e.x);
+				int ay = abs(e.y);
+				if (ay >= ax) {
+					if (e.y < 0) xdo_click_window(xdo, CURRENTWINDOW, 4);	// scroll up
+					if (e.y > 0) xdo_click_window(xdo, CURRENTWINDOW, 5);	// scroll down
+				}
+				if (ax >= ay) {
+					if (e.x < 0) xdo_click_window(xdo, CURRENTWINDOW, 6);	// scroll left
+					if (e.x > 0) xdo_click_window(xdo, CURRENTWINDOW, 7);	// scroll right
+				}
 				if (!e.m) mode = MODE_NORMAL;
 				break;
 		}
