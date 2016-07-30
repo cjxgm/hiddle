@@ -20,7 +20,7 @@
 #include <err.h>
 #include <xdo.h>
 #include <time.h>
-#include <config.h>
+#include "config.h"
 
 typedef struct
 {

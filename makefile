@@ -6,7 +6,7 @@ DST = hiddle
 APP = hiddle
 VER = 0.13
 ARG =
-FLG = -Wall -O3 -std=gnu11 -I.
+FLG = -Wall -O3 -std=gnu11
 LIB = -lxdo
 
 # interfaces
@@ -39,9 +39,10 @@ config.h: makefile
 	echo "#pragma once" > config.h
 	echo "#define APP_NAME \"$(APP)\"" >> config.h
 	echo "#define APP_VER  \"$(VER)\"" >> config.h
+	echo >> config.h
 $(DST): $(OBJ) makefile
 	gcc -o $@ $< $(FLG) $(LIB)
 .c.o:
 	gcc -c -o $@ $< $(FLG) $(LIB)
-$(foreach file,$(SRC),$(eval $(shell gcc -MM $(FLG) $(file)) config.h makefile))
+hiddle.c: config.h makefile
 
