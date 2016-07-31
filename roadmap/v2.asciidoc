@@ -1,0 +1,21 @@
+= `hiddle` v2 Roadmap
+
+== 2.0.x
+
+* Clean up documents
+* Completely refactor in Nim
+** Use Linux Input Subsystem directly
+*** `uinput` for emulating a mouse
+*** `evdev` for listening and grabbing mouse events
+* systemd integration
+** Provide a system-level service
+* Support Wayland
+* Original features
+** Mouse grabbing when scrolling is 'By The Way' resolved.
+
+== 2.1.x
+
+* Proper commandline argument parsing
+** Nim's parseopt is simply WRONG on Linux.
+** `linuxopt` should be made to fill the gap
+
