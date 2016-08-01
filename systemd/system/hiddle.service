@@ -1,0 +1,9 @@
+[Unit]
+Description=Hybrid Middle Mouse Button
+
+[Service]
+ExecStart=/usr/local/bin/hiddle -v
+
+[Install]
+WantedBy=multi-user.target
+

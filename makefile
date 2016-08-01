@@ -10,6 +10,8 @@ test: all
 	./build/hiddle -v
 install: all
 	install -svm 755 ./build/hiddle /usr/local/bin/
+	install -vm 644 ./systemd/system/hiddle.service /etc/systemd/system/
 uninstall:
 	rm -f /usr/local/bin/hiddle
+	rm -f /etc/systemd/system/hiddle.service
 
