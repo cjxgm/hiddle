@@ -1,0 +1,12 @@
+= `hiddle` 2.0.0
+
+* Technical:
+** Completely rewrote in Nim
+** No dependencies except for a Linux kernel and C runtime
+** Using `evdev` (`/dev/input/event*`) and `uinput` (`/dev/uinput`)
+* Features:
+** Scrolling won't move the cursor any more
+** Works in Wayland now
+* Integration:
+** A systemd service file is provided
+
