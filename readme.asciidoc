@@ -1,0 +1,57 @@
+= `hiddle` - Hybrid Middle Mouse Button
+
+    Licensed under the MIT License.
+    Copyright (C) 2013-2015, and 2016 Giumo Xavier Clanjor (哆啦比猫/兰威举)
+
+This little program is for those who are using a laptop
+with physical middle mouse button and need both the ability to
+use drag middle button and to scroll.
+
+With this program:
+
+* to **click** middle mouse button: just **click** it
+* to **drag** with middle mouse button: **hold** down it, and **move** your mouse
+  within 500 milliseconds (the time is customizable via command line options)
+* to **scroll** with middle mouse button: **hold** down it, **wait** for 500 milliseconds,
+  then **move** your mouse.
+
+== Prerequisites
+* A working Linux (Arch Linux recommended) with `evdev` and `uinput`
+* If you are going to compile from source, a working Nim environment and
+  C language build environment are required
+  (GNU make, GCC, standard GNU C headers, Nim compiler, Nimble).
+  In Arch Linux, you can run `pacman -S nim nimble base-devel` as root to get them all.
+
+== Compile and Install
+
+[source, sh]
+----
+make
+sudo make install
+----
+
+== Uninstall
+
+[source, sh]
+----
+sudo make uninstall
+----
+
+== Usage
+You can just run `hiddle`, or `hiddle --help` for more options.
+But it's recommended to run `hiddle` as a systemd system service (which is also called `hiddle`).
+
+== FAQ
+
+[qanda]
+.Troubleshooting
+No `/dev/uinput`?::
+    Try `modprobe uinput`.
+Still no `/dev/uinput` with the above command ran successfully?::
+    Maybe it's in `/dev/input/uinput`. If so, ask the sysadmin (yourself) to
+    move it to `/dev/uinput`
+    (by reconfiguring and compiling the kernel or uinput kernel module).
+Permission denied?::
+    Add yourself to `input` group. Or, you know, just `sudo` it.
+    But you should really run it through systemd.
+
